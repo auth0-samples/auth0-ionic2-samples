@@ -1,8 +1,49 @@
-# Auth0 - Ionic 2
+## Auth0 - Ionic 2 Login
 
-This repo contains samples that demonstrate how to use Auth0 in an Ionic 2 application.
+This sample demonstrates how to add authentication to an Ionic 2 application using Auth0.
 
-Read the [quickstart guide](https://auth0.com/docs/quickstart/native/ionic2) for more detail.
+## Installation
+
+Clone the repo and install the dependencies.
+
+```bash
+npm install
+```
+
+## Set Auth0 Variable
+
+Rename the `auth0-variables.ts.example` file to `auth0-variables.ts` and populate it with your application's  Auth0 client ID and domain.
+
+## Add the `InAppBrowser` Plugin
+
+You must install the `InAppBrowser` plugin from Cordova to be able to show the Login popup. The seed project already has this plugin added, but if you are adding Auth0 to your own application you need to run the following command:
+
+```bash
+ionic plugin add cordova-plugin-inappbrowser
+```
+
+and then add the following configuration to the `config.xml` file:
+
+```xml
+<feature name="InAppBrowser">
+  <param name="ios-package" value="CDVInAppBrowser" />
+  <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser" />
+</feature>
+```
+
+## Run the Application
+
+To serve the applicaton in the browser, use `ionic serve`.
+
+```bash
+ionic serve
+```
+
+To emulate the application, use `ionic emulate`. You may optionally choose a target device for the platform you are using.
+
+```bash
+ionic emulate ios --target="iPhone-6"
+```
 
 ## What is Auth0?
 
