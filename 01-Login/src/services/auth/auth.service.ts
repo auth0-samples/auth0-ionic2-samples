@@ -3,10 +3,8 @@ import { AuthHttp, JwtHelper, tokenNotExpired } from 'angular2-jwt';
 import { Injectable, NgZone } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { Auth0Vars } from '../../auth0-variables';
-
-// Avoid name not found warnings
-declare var Auth0: any;
-declare var Auth0Lock: any;
+import Auth0Lock from 'auth0-lock';
+import Auth0 from 'auth0-js';
 
 @Injectable()
 export class AuthService {
@@ -18,7 +16,8 @@ export class AuthService {
       redirect: false,
       params: {
         scope: 'openid offline_access',
-      }
+      },
+      sso: false
     }
   });
   storage: Storage = new Storage();
