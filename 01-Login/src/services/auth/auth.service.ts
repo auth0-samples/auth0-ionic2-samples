@@ -10,12 +10,13 @@ import Auth0 from 'auth0-js';
 export class AuthService {
 
   jwtHelper: JwtHelper = new JwtHelper();
-  auth0 = new Auth0({clientID: Auth0Vars.AUTH0_CLIENT_ID, domain: Auth0Vars.AUTH0_DOMAIN });
+  auth0 = new Auth0.WebAuth({clientID: Auth0Vars.AUTH0_CLIENT_ID, domain: Auth0Vars.AUTH0_DOMAIN });
   lock = new Auth0Lock(Auth0Vars.AUTH0_CLIENT_ID, Auth0Vars.AUTH0_DOMAIN, {
     auth: {
       redirect: false,
       params: {
         scope: 'openid offline_access',
+        device: 'Mobile Phone'
       },
       sso: false
     }
