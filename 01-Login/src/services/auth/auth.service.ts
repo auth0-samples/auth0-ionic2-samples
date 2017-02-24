@@ -15,7 +15,8 @@ export class AuthService {
     auth: {
       redirect: false,
       params: {
-        scope: 'openid offline_access',
+        scope: 'openid profile offline_access',
+        device: 'my-device'
       },
       sso: false
     }
@@ -24,6 +25,7 @@ export class AuthService {
   refreshSubscription: any;
   user: Object;
   zoneImpl: NgZone;
+  accessToken: string;
   idToken: string;
   
   constructor(private authHttp: AuthHttp, zone: NgZone) {
@@ -35,33 +37,37 @@ export class AuthService {
       console.log(error);
     });
 
-    this.storage.get('id_token').then(token => {
-      this.idToken = token;
+    this.storage.get('access_token').then(token => {
+      this.accessToken = token;
     });
 
     this.lock.on('authenticated', authResult => {
-      this.storage.set('id_token', authResult.idToken);
-      this.idToken = authResult.idToken;
+      if (authResult && authResult.accessToken && authResult.idToken) {
+        this.storage.set('access_token', authResult.accessToken);
+        this.storage.set('id_token', authResult.idToken);
+        this.storage.set('refresh_token', authResult.refreshToken);
+        this.accessToken = authResult.accessToken;
+        this.idToken = authResult.idToken;
 
-      // Fetch profile information
-      this.lock.getProfile(authResult.idToken, (error, profile) => {
-        if (error) {
-          // Handle error
-          alert(error);
-          return;
-        }
+        // Fetch profile information
+        this.lock.getUserInfo(this.accessToken, (error, profile) => {
+          if (error) {
+            // Handle error
+            alert(error);
+            return;
+          }
 
-        profile.user_metadata = profile.user_metadata || {};
-        this.storage.set('profile', JSON.stringify(profile));
-        this.user = profile;
-      });
+          profile.user_metadata = profile.user_metadata || {};
+          this.storage.set('profile', JSON.stringify(profile));
+          this.user = profile;
+        });
 
-      this.lock.hide();
+        this.lock.hide();
 
-      this.storage.set('refresh_token', authResult.refreshToken);
-      this.zoneImpl.run(() => this.user = authResult.profile);
-      // Schedule a token refresh
-      this.scheduleRefresh();
+        this.zoneImpl.run(() => this.user = authResult.profile);
+        // // Schedule a token refresh
+        this.scheduleRefresh();
+      }
 
     });    
   }
@@ -77,6 +83,7 @@ export class AuthService {
   
   public logout() {
     this.storage.remove('profile');
+    this.storage.remove('access_token');
     this.storage.remove('id_token');
     this.idToken = null;
     this.storage.remove('refresh_token');
