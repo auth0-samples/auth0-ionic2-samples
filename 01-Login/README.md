@@ -39,7 +39,13 @@ To serve the applicaton in the browser, use `ionic serve`.
 ionic serve
 ```
 
-To emulate the application, use `ionic emulate`. You may optionally choose a target device for the platform you are using.
+To emulate the application, you'll need to add the plaform you wish to emulate, so for ios it will be
+
+```bash
+ionic platform add ios
+```
+
+and then use `ionic emulate`. You may optionally choose a target device for the platform you are using.
 
 ```bash
 ionic emulate ios --target="iPhone-6"
