@@ -26,11 +26,9 @@ platforms/
 plugins/
 plugins/android.json
 plugins/ios.json
-!www/.gitkeep
+www/
 $RECYCLE.BIN/
 
 .DS_Store
 Thumbs.db
 UserInterfaceState.xcuserstate
-
-auth0-variables.ts
