@@ -27,7 +27,7 @@ import { HomePage } from '../pages/home/home';
   providers: [
     StatusBar,
     SplashScreen,
-
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
     // This service is part of "Adding an Authentication Service"
     AuthService
   ]
