@@ -74,3 +74,7 @@ In your `app.component.ts` file, add this import: `import Auth0Cordova from '@au
 ```
 
 This will tell the Auth0Cordova library to handle url redirects created by `cordova-plugin-customurlscheme`, and ultimately get users back into your application.
+
+## Running the app
+
+First, make sure you have a platform added: `ionic cordova platform add android` or `ionic cordova platform add ios`. Then, you can do either `ionic cordova emulate <platform>` or `ionic cordova run <platform>`, depending on if you want to start the project in an emulator or run it on a real device, respectively.
