@@ -1,4 +1,3 @@
-import { JwtHelper, tokenNotExpired } from 'angular2-jwt';
 import { Injectable, NgZone } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 
@@ -19,7 +18,6 @@ const auth0Config = {
 
 @Injectable()
 export class AuthService {
-  jwtHelper = new JwtHelper();
   auth0 = new Auth0.WebAuth(auth0Config);
   accessToken: string;
   idToken: string;
@@ -49,7 +47,8 @@ export class AuthService {
   }
 
   public isAuthenticated() {
-    return tokenNotExpired('id_token', this.idToken);
+    const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
+    return Date.now() < expiresAt;
   }
 
   public login() {
@@ -66,6 +65,9 @@ export class AuthService {
 
       this.setIdToken(authResult.idToken);
       this.setAccessToken(authResult.accessToken);
+
+      const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
+      this.setStorageVariable('expires_at', expiresAt);
 
       this.auth0.client.userInfo(this.accessToken, (err, profile) => {
         if(err) {
@@ -85,6 +87,7 @@ export class AuthService {
     window.localStorage.removeItem('profile');
     window.localStorage.removeItem('access_token');
     window.localStorage.removeItem('id_token');
+    window.localStorage.removeItem('expires_at');
 
     this.idToken = null;
     this.accessToken = null;
