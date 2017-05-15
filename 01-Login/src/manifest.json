@@ -9,6 +9,5 @@
     "type": "image/png"
   }],
   "background_color": "#4e8ef7",
-  "theme_color": "#4e8ef7",
-  "scope": "/"
+  "theme_color": "#4e8ef7"
 }

@@ -1,80 +1,80 @@
-## Auth0 - Ionic 2 Login
+# Auth0 - Ionic 2 Login
 
-This sample demonstrates how to add authentication to an Ionic 2 application using Auth0.
+## Auth0 Dashboard Setup
 
-## Installation
+Before you get started, you should head to your Auth0 dashboard and configure a few client settings:
 
-Clone the repo and install the dependencies.
+### Callback URL
 
-```bash
-npm install
+The Callback URL is used to send authentication data back to your app after logging in with Auth0. It is in the format:
+
+`YOUR_PACKAGE_ID://YOUR_AUTH0_DOMAIN/cordova/YOUR_PACKAGE_ID/callback`
+
+Where:
+
+
+* `YOUR_PACKAGE_ID` is the app identifier. For example, this project is `io.ionic.starter.auth0`.
+* `YOUR_AUTH0_DOMAIN` is the account for your Auth0 instance (with `.auth0.com` at the end). For example, this project is: `seiyria-auth0-samples.auth0.com`.
+
+### CORS
+
+You need to set up CORS (Cross Origin Resource Sharing) in your dashboard so Auth0 will actually accept your requests. To make that work, you'll want to add `file://*` to your CORS settings - that will make it work for all requests from within the app.
+
+### Client Type
+
+You'll need to set the Client Type to `Native` so Auth0 knows what kind of requests to expect. Even though this is a web app packaged as a native one, you'll need to set it to Native here.
+
+## Install Dependencies
+
+If you're using this sample as a base for your project, you can just run `npm install`, but if you're setting up your own Ionic project, install these dependencies:
+
+
+* `angular2-jwt`
+* `auth0-js`
+* `@auth0/cordova`
+
+Here they are as one install command, for convenience:
+
+`npm install angular2-jwt auth0-js @auth0/cordova --save`
+
+## Install Cordova Plugins
+
+You'll need a few cordova plugins to get `@auth0/cordova` to work. You can add them like so:
+
+
+* `ionic cordova plugin add cordova-plugin-safariviewcontroller`
+* `ionic cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME={YOUR_PACKAGE_ID} --variable ANDROID_SCHEME={YOUR_PACKAGE_ID} --variable ANDROID_HOST={YOUR_AUTH0_DOMAIN} --variable ANDROID_PATHPREFIX=/cordova/{YOUR_PACKAGE_ID}/callback`
+
+The variables used when installing `cordova-plugin-customurlscheme` are the same from when you set up the Callback URL in your Auth0 Dashboard.
+
+### Reinstalling Plugins
+
+Instead of changing plugin configuration manually, it is better to re-install the plugin entirely. First, do a remove: `ionic cordova plugin remove <plugin>` then re-add it as done above.
+
+## Set Auth0 Variables
+
+If you're using this sample as a base for your project, edit `src/auth0-variables`. Otherwise, copy it to your own project. You'll need to change each variable:
+
+* `AUTH0_DOMAIN` - This will be `YOUR_AUTH0_DOMAIN` from above.
+* `AUTH0_APPLICATION_PACKAGE_NAME` - This will be `YOUR_PACKAGE_ID` from above.
+* `AUTH0_CLIENT_ID` - This will be the Client ID for whichever client you configured in the first step.
+
+## Creating an Authentication Service
+
+If you're using this sample as a base for your project, you don't have to do anything. Otherwise, you should copy `src/services/auth.service.ts` to your own project. This service will handle basic login, logout, authentication checking, and token refreshing for you, and can be extended easily. Don't forget to add this service to your `app.module.ts`!
+
+## Set Up Auth0-Cordova
+
+In your `app.component.ts` file, add this import: `import Auth0Cordova from '@auth0/cordova';`, and, in your `platform.ready()` callback, add this chunk of code:
+
+```
+(<any>window).handleOpenURL = (url) => {
+  Auth0Cordova.onRedirectUri(url);
+};
 ```
 
-## Set Auth0 Variable
+This will tell the Auth0Cordova library to handle url redirects created by `cordova-plugin-customurlscheme`, and ultimately get users back into your application.
 
-Rename the `auth0-variables.ts.example` file to `auth0-variables.ts` and populate it with your application's  Auth0 client ID and domain.
+## Running the app
 
-## Add the `InAppBrowser` Plugin
-
-You must install the `InAppBrowser` plugin from Cordova to be able to show the Login popup. The seed project already has this plugin added, but if you are adding Auth0 to your own application you need to run the following command:
-
-```bash
-ionic plugin add cordova-plugin-inappbrowser
-```
-
-and then add the following configuration to the `config.xml` file:
-
-```xml
-<feature name="InAppBrowser">
-  <param name="ios-package" value="CDVInAppBrowser" />
-  <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser" />
-</feature>
-```
-
-## Run the Application
-
-To serve the applicaton in the browser, use `ionic serve`.
-
-```bash
-ionic serve
-```
-
-To emulate the application, you'll need to add the plaform you wish to emulate, so for ios it will be
-
-```bash
-ionic platform add ios
-```
-
-and then use `ionic emulate`. You may optionally choose a target device for the platform you are using.
-
-```bash
-ionic emulate ios --target="iPhone-6"
-```
-
-## What is Auth0?
-
-Auth0 helps you to:
-
-* Add authentication with [multiple authentication sources](https://docs.auth0.com/identityproviders), either social like **Google, Facebook, Microsoft Account, LinkedIn, GitHub, Twitter, Box, Salesforce, among others**, or enterprise identity systems like **Windows Azure AD, Google Apps, Active Directory, ADFS or any SAML Identity Provider**.
-* Add authentication through more traditional **[username/password databases](https://docs.auth0.com/mysql-connection-tutorial)**.
-* Add support for **[linking different user accounts](https://docs.auth0.com/link-accounts)** with the same user.
-* Support for generating signed [JSON Web Tokens](https://docs.auth0.com/jwt) to call your APIs and **flow the user identity** securely.
-* Analytics of how, when and where users are logging in.
-* Pull data from other sources and add it to the user profile, through [JavaScript rules](https://docs.auth0.com/rules).
-
-## Create a free account in Auth0
-
-1. Go to [Auth0](https://auth0.com) and click Sign Up.
-2. Use Google, GitHub or Microsoft Account to login.
-
-## Issue Reporting
-
-If you have found a bug or if you have a feature request, please report them at this repository issues section. Please do not report security vulnerabilities on the public GitHub issue tracker. The [Responsible Disclosure Program](https://auth0.com/whitehat) details the procedure for disclosing security issues.
-
-## Author
-
-[Auth0](auth0.com)
-
-## License
-
-This project is licensed under the MIT license. See the [LICENSE](LICENSE) file for more info.
+First, make sure you have a platform added: `ionic cordova platform add android` or `ionic cordova platform add ios`. Then, you can do either `ionic cordova emulate <platform>` or `ionic cordova run <platform>`, depending on if you want to start the project in an emulator or run it on a real device, respectively.

@@ -1,44 +1,35 @@
-import { NgModule } from '@angular/core';
-import { IonicApp, IonicModule } from 'ionic-angular';
-import { AuthApp } from './app.component';
-import { TabsPage } from '../pages/tabs/tabs';
-import { ProfilePage } from '../pages/profile/profile';
-import { AuthConfig, AuthHttp } from 'angular2-jwt';
-import { AuthService } from '../services/auth/auth.service';
-import { Http } from '@angular/http';
-import { Storage } from '@ionic/storage';
+import { BrowserModule } from '@angular/platform-browser';
+import { ErrorHandler, NgModule } from '@angular/core';
+import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
 
-let storage: Storage = new Storage();
+// This import is part of "Creating an Authentication Service"
+import { AuthService } from '../services/auth.service';
 
-export function getAuthHttp(http) {
-  return new AuthHttp(new AuthConfig({
-    globalHeaders: [{'Accept': 'application/json'}],
-    tokenGetter: (() => storage.get('id_token'))
-  }), http);
-}
+import { MyApp } from './app.component';
+import { HomePage } from '../pages/home/home';
 
 @NgModule({
   declarations: [
-    AuthApp,
-    ProfilePage,
-    TabsPage
+    MyApp,
+    HomePage
   ],
   imports: [
-    IonicModule.forRoot(AuthApp)
+    BrowserModule,
+    IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    AuthApp,
-    ProfilePage,
-    TabsPage
+    MyApp,
+    HomePage
   ],
   providers: [
-    AuthService,
-    {
-      provide: AuthHttp,
-      useFactory: getAuthHttp,
-      deps: [Http]
-    }
+    StatusBar,
+    SplashScreen,
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
+    // This service is part of "Adding an Authentication Service"
+    AuthService
   ]
 })
 export class AppModule {}
