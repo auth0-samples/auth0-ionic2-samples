@@ -6,11 +6,11 @@ import Auth0 from 'auth0-js';
 
 const auth0Config = {
   // needed for auth0
-  clientID: 'KeqqwaYkUfLiyTyMHiU06uaU1AjvDnX1',
+  clientID: '{CLIENT_ID}',
 
   // needed for auth0cordova
-  clientId: 'KeqqwaYkUfLiyTyMHiU06uaU1AjvDnX1',
-  domain: 'seiyria-auth0-samples.auth0.com',
+  clientId: '{CLIENT_ID}',
+  domain: '{DOMAIN}',
   callbackURL: location.href,
   packageIdentifier: 'io.ionic.starter.auth0'
 };
