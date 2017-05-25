@@ -51,6 +51,13 @@ The variables used when installing `cordova-plugin-customurlscheme` are the same
 
 Instead of changing plugin configuration manually, it is better to re-install the plugin entirely. First, do a remove: `ionic cordova plugin remove <plugin>` then re-add it as done above.
 
+## Set AndroidLaunchMode 
+
+In your `config.xml` file, add this preference:
+```
+ <preference name="AndroidLaunchMode" value="singleTask" />
+```
+
 ## Set Auth0 Variables
 
 If you're using this sample as a base for your project, edit `src/auth0-variables`. Otherwise, copy it to your own project. You'll need to change each variable:
