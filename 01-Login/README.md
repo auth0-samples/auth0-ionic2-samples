@@ -13,8 +13,8 @@ The Callback URL is used to send authentication data back to your app after logg
 Where:
 
 
-* `YOUR_PACKAGE_ID` is the app identifier. For example, this project is `io.ionic.starter.auth0`.
-* `YOUR_AUTH0_DOMAIN` is the account for your Auth0 instance (with `.auth0.com` at the end). For example, this project is: `seiyria-auth0-samples.auth0.com`.
+* `YOUR_PACKAGE_ID` is the app identifier. Ex: `io.ionic.starter.auth0`.
+* `YOUR_AUTH0_DOMAIN` is your Auth0 tenant name. Ex: `<tenant>.auth0.com`.
 
 ### CORS
 
@@ -60,11 +60,9 @@ In your `config.xml` file, add this preference:
 
 ## Set Auth0 Variables
 
-If you're using this sample as a base for your project, edit `src/auth0-variables`. Otherwise, copy it to your own project. You'll need to change each variable:
+If you're using this sample as a base for your project, edit `src/services/auth.service.ts`. Otherwise, copy it to your own project. You'll need to change each variable:
 
-* `AUTH0_DOMAIN` - This will be `YOUR_AUTH0_DOMAIN` from above.
-* `AUTH0_APPLICATION_PACKAGE_NAME` - This will be `YOUR_PACKAGE_ID` from above.
-* `AUTH0_CLIENT_ID` - This will be the Client ID for whichever client you configured in the first step.
+If you downloaded this sample from Auth0's docs page, it will come pre-populated with the keys for your client. If you are cloning it directly from Github, you will need to supply the keys yourself. The necessary keys are `clientId`, `domain`, and `packageIdentifier` which are all set in `src/services/auth.service.ts`.
 
 ## Creating an Authentication Service
 
