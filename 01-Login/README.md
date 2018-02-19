@@ -1,3 +1,5 @@
+# NOTE: These examples are currently not working well. We are actively working on having a better solution for Ionic.
+
 # Auth0 - Ionic 2 Login
 
 ## Auth0 Dashboard Setup
